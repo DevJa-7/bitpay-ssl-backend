@@ -4,7 +4,7 @@ const lib = require('./crypto');
 
 // save username and password
 var username = 'admin';
-var password = '1234';
+var password = process.argv[2] || '1234';
 
 // Base url
 const baseUrl = 'http://localhost:3000';

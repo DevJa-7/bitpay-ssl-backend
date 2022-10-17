@@ -4,8 +4,11 @@ var crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const lib = require('./crypto');
 
-const port = 3000;
 var bodyParser = require('body-parser');
+
+// server setting
+const port = 3000;
+const defaultPassword = process.argv[2] || '1234';
 
 // create application/json parser
 var jsonParser = bodyParser.json();
@@ -14,7 +17,7 @@ var jsonParser = bodyParser.json();
 var tokenKey = 'BITPAY_TOKEN_SECRET';
 
 // store hashed password
-var hashedPassword = lib.generatePassword('1234');
+var hashedPassword = lib.generatePassword(defaultPassword);
 
 // store authorized token
 var authorizedToken = null;
