@@ -23,7 +23,6 @@ const validateUser = async (username, password) => {
 }
 
 const sendPublicKey = async (token, password) => {
-    console.log('password: ', password);
     const [publicKey, privateKey] = await lib.generateKeyPair(password);
     const res = await axios.post(`${baseUrl}/publickey`, {
         publicKey: publicKey,
@@ -45,12 +44,11 @@ const sendMessage = async (token, privateKey) => {
         username: username,
         message: 'This is the message.' 
     }
-    console.log('sendmessage---', actualdata)
+
     let encmsg = crypto.privateEncrypt({
         key: privateKey,
         passphrase: password
     }, Buffer.from(JSON.stringify(actualdata), 'utf8')).toString('base64');
-        console.log('encmsg: ', encmsg);
 
     const res = await axios.post(`${baseUrl}/message`, {
         encmsg: encmsg,

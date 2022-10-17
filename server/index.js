@@ -92,7 +92,6 @@ app.post('/publickey', jsonParser, (req, res) => {
 app.post('/message', jsonParser, (req, res) => {
     verifyToken(req, res, () => {
         const message = req.body.encmsg;
-        console.log('message: ', message);
         if (publicKey && message) {
             const decresdata = crypto.publicDecrypt(publicKey,
                 Buffer.from(message, 'base64')).toString();
