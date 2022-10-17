@@ -2,6 +2,7 @@ var crypto = require('crypto');
 
 exports.generateKeyPair = (password) => {
 	return new Promise((resolve, reject) => {
+		console.log('password: ', password);
 		crypto.generateKeyPair('rsa', {
 			modulusLength: 4096,
 			publicKeyEncoding: {

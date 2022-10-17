@@ -29,11 +29,13 @@ app.post('/authenticate', jsonParser, (req, res) => {
 
     if (lib.validPassword(password, hashedPassword)) {
         authorizedToken = jwt.sign({userId: username}, tokenKey, {expiresIn: '24h'})
+        console.log('User token generated!');
         res.status(200).json({
             error: false,
             token: authorizedToken
         });
     } else {
+        console.log('User Token failed!');
         return res.status(401).json({
             error: true,
             message: 'Incorrect password!'
@@ -71,12 +73,13 @@ app.post('/publickey', jsonParser, (req, res) => {
     verifyToken(req, res, () => {
         if (req.body.publicKey) {
             publicKey = req.body.publicKey;
-            console.log('publicKey: ', publicKey);
+            console.log('Public Key is saved!');
             res.status(200).json({
                 error: false,
                 message: 'Public key is saved!'
             })
         } else {
+            console.log('Public Key not saved.');
             return res.status(401).json({
                 error: true,
                 message: 'No Public key'
@@ -89,12 +92,13 @@ app.post('/publickey', jsonParser, (req, res) => {
 app.post('/message', jsonParser, (req, res) => {
     verifyToken(req, res, () => {
         const message = req.body.encmsg;
+        console.log('message: ', message);
         if (publicKey && message) {
             const decresdata = crypto.publicDecrypt(publicKey,
                 Buffer.from(message, 'base64')).toString();
             const parsedData = JSON.parse(decresdata);
             if (decresdata && parsedData) {
-                console.log('parsedData: ', parsedData);
+                console.log('Message Received: ', parsedData);
                 return res.status(200).json({
                     error: false,
                     message: parsedData
@@ -102,6 +106,7 @@ app.post('/message', jsonParser, (req, res) => {
             }
         }
 
+        console.log('Message not received');
         return res.status(401).json({
             error: true,
             message: 'No Message'

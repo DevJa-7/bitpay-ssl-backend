@@ -45,9 +45,12 @@ const sendMessage = async (token, privateKey) => {
         username: username,
         message: 'This is the message.' 
     }
-    console.log('sendmessage---', privateKey, token)
-    let encmsg = crypto.privateEncrypt(privateKey,
-        Buffer.from(JSON.stringify(actualdata), 'utf8')).toString('base64');
+    console.log('sendmessage---', actualdata)
+    let encmsg = crypto.privateEncrypt({
+        key: privateKey,
+        passphrase: password
+    }, Buffer.from(JSON.stringify(actualdata), 'utf8')).toString('base64');
+        console.log('encmsg: ', encmsg);
 
     const res = await axios.post(`${baseUrl}/message`, {
         encmsg: encmsg,
