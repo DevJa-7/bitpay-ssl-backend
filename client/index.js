@@ -68,5 +68,5 @@ validateUser(username, password)
 .then((data) => sendMessage(data.token, data.privateKey))
 .then((data) => console.log('done'))
 .catch(err => {
-    console.log('Error on Client Side. error:', err);
+    console.log('Error on Client Side. error:', err?.response?.data);
 })
