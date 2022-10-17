@@ -1,4 +1,4 @@
-# bitpay-ssl-backend
+# bitpay-testing-app
 
 ## Run Server
 
