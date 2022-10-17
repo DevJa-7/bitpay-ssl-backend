@@ -9,6 +9,7 @@ var password = process.argv[2] || '1234';
 // Base url
 const baseUrl = 'http://localhost:3000';
 
+// get the token from username and password
 const validateUser = async (username, password) => {
     const res = await axios.post(`${baseUrl}/authenticate`, {
         username: username,
@@ -22,6 +23,7 @@ const validateUser = async (username, password) => {
     throw new Error('Validating Error.');
 }
 
+// send the public key to the server
 const sendPublicKey = async (token, password) => {
     const [publicKey, privateKey] = await lib.generateKeyPair(password);
     const res = await axios.post(`${baseUrl}/publickey`, {
@@ -39,12 +41,14 @@ const sendPublicKey = async (token, password) => {
     throw new Error('Public Key is not saved.');
 }
 
+// send the message with private key and message content
 const sendMessage = async (token, privateKey) => {
     const actualdata = {
         username: username,
         message: 'This is the message.' 
     }
 
+    // generate encrypted message
     let encmsg = crypto.privateEncrypt({
         key: privateKey,
         passphrase: password
@@ -63,6 +67,7 @@ const sendMessage = async (token, privateKey) => {
     throw new Error('Message is not sent.');
 }
 
+// run the app on front end side.
 validateUser(username, password)
 .then((token) => sendPublicKey(token, password))
 .then((data) => sendMessage(data.token, data.privateKey))
